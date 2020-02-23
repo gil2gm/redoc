@@ -5,6 +5,7 @@ import { ClipboardService } from '../services/ClipboardService';
 
 export interface CopyButtonWrapperProps {
   data: any;
+  usingTryNow: Boolean;
   children: (props: { renderCopyButton: () => React.ReactNode }) => React.ReactNode;
 }
 
@@ -20,7 +21,9 @@ export class CopyButtonWrapper extends React.PureComponent<
   }
 
   render() {
-    return this.props.children({ renderCopyButton: this.renderCopyButton });
+    return this.props.children({
+      renderCopyButton: this.renderCopyButton,
+    });
   }
 
   copy = () => {

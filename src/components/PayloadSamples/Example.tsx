@@ -8,17 +8,26 @@ import { useExternalExample } from './exernalExampleHook';
 export interface ExampleProps {
   example: ExampleModel;
   mimeType: string;
+  consoleViewerObj: any;
 }
 
-export function Example({ example, mimeType }: ExampleProps) {
+export function Example({ example, mimeType, consoleViewerObj }: ExampleProps) {
   if (example.value === undefined && example.externalValueUrl) {
-    return <ExternalExample example={example} mimeType={mimeType} />;
+    return (
+      <ExternalExample
+        example={example}
+        mimeType={mimeType}
+        consoleViewerObj={this.props.consoleViewerObj}
+      />
+    );
   } else {
-    return <ExampleValue value={example.value} mimeType={mimeType} />;
+    return (
+      <ExampleValue value={example.value} mimeType={mimeType} consoleViewerObj={consoleViewerObj} />
+    );
   }
 }
 
-export function ExternalExample({ example, mimeType }: ExampleProps) {
+export function ExternalExample({ example, mimeType, consoleViewerObj }: ExampleProps) {
   const value = useExternalExample(example, mimeType);
 
   if (value === undefined) {
@@ -36,5 +45,5 @@ export function ExternalExample({ example, mimeType }: ExampleProps) {
     );
   }
 
-  return <ExampleValue value={value} mimeType={mimeType} />;
+  return <ExampleValue value={value} mimeType={mimeType} consoleViewerObj={consoleViewerObj} />;
 }

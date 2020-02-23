@@ -66,7 +66,11 @@ export class SchemaDefinition extends React.PureComponent<ObjectDescriptionProps
           </MiddlePanel>
           <DarkRightPanel>
             <MediaSamplesWrap>
-              <MediaTypeSamples renderDropdown={this.renderDropdown} mediaType={this.mediaModel} />
+              <MediaTypeSamples
+                renderDropdown={this.renderDropdown}
+                mediaType={this.mediaModel}
+                consoleViewerObj={{}}
+              />
             </MediaSamplesWrap>
           </DarkRightPanel>
         </Row>

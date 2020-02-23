@@ -3,12 +3,14 @@ import * as React from 'react';
 import { isPayloadSample, OperationModel, RedocNormalizedOptions } from '../../services';
 import { PayloadSamples } from '../PayloadSamples/PayloadSamples';
 import { SourceCodeWithCopy } from '../SourceCode/SourceCode';
+import { ConsoleViewer } from '../Console/ConsoleViewer';
 
 import { RightPanelHeader, Tab, TabList, TabPanel, Tabs } from '../../common-elements';
 import { OptionsContext } from '../OptionsProvider';
 
 export interface RequestSamplesProps {
   operation: OperationModel;
+  consoleViewerObj: any;
 }
 
 @observer
@@ -18,7 +20,7 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
   operation: OperationModel;
 
   render() {
-    const { operation } = this.props;
+    const { operation, consoleViewerObj } = this.props;
     const samples = operation.codeSamples;
 
     const hasSamples = samples.length > 0;
@@ -39,8 +41,11 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
             {samples.map(sample => (
               <TabPanel key={sample.lang + '_' + (sample.label || '')}>
                 {isPayloadSample(sample) ? (
-                  <div>
-                    <PayloadSamples content={sample.requestBodyContent} />
+                  <div id="payloadSamples">
+                    <PayloadSamples
+                      content={sample.requestBodyContent}
+                      consoleViewerObj={consoleViewerObj}
+                    />
                   </div>
                 ) : (
                   <SourceCodeWithCopy lang={sample.lang} source={sample.source} />
@@ -49,8 +54,22 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
             ))}
           </Tabs>
         </div>
-      )) ||
-      null
+      )) || (
+        <OptionsContext.Consumer>
+          {options => {
+            return (
+              <ConsoleViewer
+                securitySchemes={this.props.consoleViewerObj.securitySchemes}
+                operation={this.props.consoleViewerObj.operation}
+                urlIndex={this.props.consoleViewerObj.urlIndex}
+                additionalHeaders={options.additionalHeaders}
+                queryParamPrefix={options.queryParamPrefix}
+                queryParamSuffix={options.queryParamSuffix}
+              />
+            );
+          }}
+        </OptionsContext.Consumer>
+      )
     );
   }
 }

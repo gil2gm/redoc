@@ -10,6 +10,7 @@ import { DropdownLabel, DropdownWrapper, NoSampleLabel } from './styled.elements
 
 export interface PayloadSamplesProps {
   mediaType: MediaTypeModel;
+  consoleViewerObj: any;
   renderDropdown: (props: DropdownProps) => JSX.Element;
 }
 
@@ -61,7 +62,11 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
           </DropdownWrapper>
           <div>
             {description && <Markdown source={description} />}
-            <Example example={example} mimeType={mimeType} />
+            <Example
+              example={example}
+              mimeType={mimeType}
+              consoleViewerObj={this.props.consoleViewerObj}
+            />
           </div>
         </SamplesWrapper>
       );
@@ -70,7 +75,11 @@ export class MediaTypeSamples extends React.Component<PayloadSamplesProps, Media
       return (
         <SamplesWrapper>
           {example.description && <Markdown source={example.description} />}
-          <Example example={example} mimeType={mimeType} />
+          <Example
+            example={example}
+            mimeType={mimeType}
+            consoleViewerObj={this.props.consoleViewerObj}
+          />
         </SamplesWrapper>
       );
     }

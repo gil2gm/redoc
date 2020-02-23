@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  SourceCodeWithCopy } from '..';
+import { SourceCodeWithCopy } from '..';
 import { RightPanelHeader } from '../../common-elements';
 import styled from '../../styled-components';
 
@@ -13,39 +13,45 @@ interface ConsoleResponseState {
   collapse: boolean;
 }
 
-export class ConsoleResponse extends React.PureComponent<ConsoleResponseProps, ConsoleResponseState> {
-
+export class ConsoleResponse extends React.PureComponent<
+  ConsoleResponseProps,
+  ConsoleResponseState
+> {
   constructor(props) {
-     super(props);
-     this.state = { collapse: false};
+    super(props);
+    this.state = { collapse: false };
   }
 
   changeCollapse = () => {
-    this.setState({collapse: !this.state.collapse});
+    this.setState({ collapse: !this.state.collapse });
   };
 
   render() {
-    const { response: { headers, type, status, statusText, content } } = this.props;
+    const {
+      response: { headers, type, status, statusText, content },
+    } = this.props;
     const collapse = this.state.collapse;
-    return(
+    return (
       <>
         <RightPanelHeader> status: </RightPanelHeader>
-        <StatusWrapper className={'status-' + type}> {status} {statusText}</StatusWrapper>
+        <StatusWrapper className={'status-' + type}>
+          {' '}
+          {status} {statusText}
+        </StatusWrapper>
         <RightPanelHeader> Response Payload </RightPanelHeader>
         <JsonWrapper>
-          <JsonViewer data={content!} />
+          <JsonViewer data={content!} consoleViewerObj={{}} />
         </JsonWrapper>
         <RightPanelHeader> Response Headers</RightPanelHeader>
         <HeaderWrapper>
           <SourceCodeWrapper className={'collapse-' + collapse}>
-            <SourceCodeWithCopy lang="json" source={JSON.stringify(headers, null, 2)}/>
+            <SourceCodeWithCopy lang="json" source={JSON.stringify(headers, null, 2)} />
           </SourceCodeWrapper>
-          {
-            collapse &&
+          {collapse && (
             <ShowMore onClick={this.changeCollapse}>
               <u>+ show undocumented response headers</u>
             </ShowMore>
-          }
+          )}
         </HeaderWrapper>
       </>
     );
@@ -58,31 +64,31 @@ const HeaderWrapper = styled.div`
   padding: 10px 0 18px;
   margin: 10px 0;
   height: 100%;
-   div div div {
-        display: none !important;
-   }
-   div pre span:first-child {
-        display: none !important;
-   }
-   div pre span:last-child {
-        display: none !important;
-   }
-   div pre {
-        height: 100%;
-        overflow: hidden;
-   }
-   div {
-        height: 100%;
-   }
+  div div div {
+    display: none !important;
+  }
+  div pre span:first-child {
+    display: none !important;
+  }
+  div pre span:last-child {
+    display: none !important;
+  }
+  div pre {
+    height: 100%;
+    overflow: hidden;
+  }
+  div {
+    height: 100%;
+  }
 `;
 
 const SourceCodeWrapper = styled.div`
   &.collapse-false {
-      height: 89px;
-    }
-    &.collapse-true {
-      height: auto;
-    }
+    height: 89px;
+  }
+  &.collapse-true {
+    height: auto;
+  }
 `;
 
 const JsonWrapper = styled.div`
@@ -94,7 +100,7 @@ const JsonWrapper = styled.div`
 
 const StatusWrapper = styled.div`
   &.status-success {
-  color: #00ff1c;
+    color: #00ff1c;
   }
   &.status-redirect {
     color: ${props => props.theme.colors.responses.redirect.color};

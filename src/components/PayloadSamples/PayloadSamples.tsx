@@ -9,6 +9,7 @@ import { InvertedSimpleDropdown, MimeLabel } from './styled.elements';
 
 export interface PayloadSamplesProps {
   content: MediaContentModel;
+  consoleViewerObj: any;
 }
 
 @observer
@@ -26,6 +27,7 @@ export class PayloadSamples extends React.Component<PayloadSamplesProps> {
             key="samples"
             mediaType={mediaType}
             renderDropdown={this.renderDropdown}
+            consoleViewerObj={this.props.consoleViewerObj}
           />
         )}
       </MediaTypesSwitch>
@@ -33,6 +35,10 @@ export class PayloadSamples extends React.Component<PayloadSamplesProps> {
   }
 
   private renderDropdown = props => {
-    return <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />;
+    return (
+      <div id="renderDropDown">
+        <DropdownOrLabel Label={MimeLabel} Dropdown={InvertedSimpleDropdown} {...props} />
+      </div>
+    );
   };
 }

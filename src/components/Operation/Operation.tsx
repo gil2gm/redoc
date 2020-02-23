@@ -7,19 +7,17 @@ import { ShareLink } from '../../common-elements/linkify';
 
 import { OperationModel as OperationType, SecuritySchemesModel } from '../../services/models';
 import styled from '../../styled-components';
-import { ConsoleViewer } from '../Console/ConsoleViewer';
 import { Endpoint } from '../Endpoint/Endpoint';
 import { ExternalDocumentation } from '../ExternalDocumentation/ExternalDocumentation';
 import { Extensions } from '../Fields/Extensions';
 import { Markdown } from '../Markdown/Markdown';
 
-import {SwitchBox} from '../../common-elements/SwitchBox';
-import {OptionsContext } from '../OptionsProvider';
-import {Parameters } from '../Parameters/Parameters';
-import {RequestSamples } from '../RequestSamples/RequestSamples';
-import {ResponsesList } from '../Responses/ResponsesList';
-import {ResponseSamples } from '../ResponseSamples/ResponseSamples';
-import {SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
+import { OptionsContext } from '../OptionsProvider';
+import { Parameters } from '../Parameters/Parameters';
+import { RequestSamples } from '../RequestSamples/RequestSamples';
+import { ResponsesList } from '../Responses/ResponsesList';
+import { ResponseSamples } from '../ResponseSamples/ResponseSamples';
+import { SecurityRequirements } from '../SecurityRequirement/SecurityRequirement';
 
 const OperationRow = styled(Row)`
   backface-visibility: hidden;
@@ -44,7 +42,6 @@ export interface OperationState {
 
 @observer
 export class Operation extends React.Component<OperationProps, OperationState> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -57,14 +54,19 @@ export class Operation extends React.Component<OperationProps, OperationState> {
     this.setState({
       executeMode: !this.state.executeMode,
     });
-  }
+  };
 
   render() {
     const { operation, securitySchemes } = this.props;
-    const { executeMode, urlIndex } = this.state;
+    const { urlIndex } = this.state;
 
     const { name: summary, description, deprecated, externalDocs } = operation;
     const hasDescription = !!(description || externalDocs);
+    var ConsoleViewerObj = {
+      urlIndex,
+      operation,
+      securitySchemes,
+    };
 
     return (
       <OptionsContext.Consumer>
@@ -75,14 +77,9 @@ export class Operation extends React.Component<OperationProps, OperationState> {
                 <ShareLink to={operation.id} />
                 {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               </H2>
-              {options.enableConsole &&
-                <SwitchBox
-                  onClick={this.onConsoleClick}
-                  checked={this.state.executeMode}
-                  label="Try it out!"
-                />
-              }
-              {options.pathInMiddlePanel && <Endpoint operation={operation} inverted={true} handleUrl={this.onUrlChanged}/>}
+              {options.pathInMiddlePanel && (
+                <Endpoint operation={operation} inverted={true} handleUrl={this.onUrlChanged} />
+              )}
               {hasDescription && (
                 <Description>
                   {description !== undefined && <Markdown source={description} />}
@@ -95,34 +92,25 @@ export class Operation extends React.Component<OperationProps, OperationState> {
               <ResponsesList responses={operation.responses} />
             </MiddlePanel>
             <DarkRightPanel>
-              {!options.pathInMiddlePanel && <Endpoint operation={operation} handleUrl={this.onUrlChanged}/>}
-              {executeMode &&
-                <div>
-                  <ConsoleViewer
-                    securitySchemes={securitySchemes}
-                    operation={operation}
-                    urlIndex={urlIndex}
-                    additionalHeaders={options.additionalHeaders}
-                    queryParamPrefix={options.queryParamPrefix}
-                    queryParamSuffix={options.queryParamSuffix}
-                  />
-                </div>
+              {!options.pathInMiddlePanel && (
+                <Endpoint operation={operation} handleUrl={this.onUrlChanged} />
+              )}
+              {
+                <RequestSamples
+                  operation={operation}
+                  consoleViewerObj={Object.assign(ConsoleViewerObj, { requestSample: true })}
+                />
               }
-              {!executeMode &&
-                <RequestSamples operation={operation} />
-              }
-              {!executeMode &&
-                <ResponseSamples operation={operation} />
-              }
+              {<ResponseSamples operation={operation} />}
             </DarkRightPanel>
           </OperationRow>
         )}
       </OptionsContext.Consumer>
     );
   }
-  onUrlChanged = (index= 0) => {
+  onUrlChanged = (index = 0) => {
     this.setState({
       urlIndex: index,
     });
-  }
+  };
 }

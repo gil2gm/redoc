@@ -1,4 +1,4 @@
-import {lighten} from 'polished';
+import { lighten } from 'polished';
 import styled from '../../styled-components';
 
 export const ConsoleEditorWrapper = styled.div`
@@ -15,14 +15,16 @@ export const ConsoleEditorWrapper = styled.div`
     background: #11171a !important;
     width: 100% !important;
   }
-  & .ace_editor .ace_marker-layer .ace_selection, & .ace_editor .ace_marker-layer .ace_selected-word {
+  & .ace_editor .ace_marker-layer .ace_selection,
+  & .ace_editor .ace_marker-layer .ace_selected-word {
     background: ${lighten(0.05, '#11171a')} !important;
     border-color: ${lighten(0.05, '#11171a')} !important;
   }
   & .ace_editor .ace_marker-layer .ace_active-line {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 1);
   }
-  & .ace_editor .ace_line, & .ace_editor .ace_cursor {
+  & .ace_editor .ace_line,
+  & .ace_editor .ace_cursor {
     color: #aaa;
   }
   & .ace_editor .ace_marker-layer .ace_bracket {
@@ -44,10 +46,10 @@ export const ConsoleEditorWrapper = styled.div`
   }
   & .ace_editor .ace_indent-guide {
     background: none;
-    color: rgba(255, 255, 255, 0.3)
+    color: rgba(255, 255, 255, 0.3);
   }
   & .ace_editor .ace_indent-guide::after {
-    content: "|";
+    content: '|';
   }
   & .ace_editor .ace_gutter {
     background: ${lighten(0.01, '#11171a')} !important;
@@ -57,10 +59,10 @@ export const ConsoleEditorWrapper = styled.div`
     background-image: none;
   }
   & .ace_editor .ace_gutter .ace_fold-widget.ace_open::after {
-    content: "-";
+    content: '-';
   }
   & .ace_editor .ace_gutter .ace_fold-widget.ace_closed::after {
-    content: "+";
+    content: '+';
   }
   & .ace_editor .ace_gutter .ace_gutter-active-line {
     background: rgba(0, 0, 0, 0.2) !important;
@@ -71,7 +73,7 @@ export const ConsoleEditorWrapper = styled.div`
   & .ace_editor .ace_gutter .ace_gutter-cell.ace_error::before {
     position: absolute;
     color: red;
-    content: "X";
+    content: 'X';
     left: 0.5em;
   }
 `;
