@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { TokenGroup } from '..';
 
-import { DarkRightPanel, H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
+import { H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
 
 import { SecuritySchemesModel } from '../../services/models';
 import { OpenAPISecurityScheme } from '../../types';
@@ -75,7 +74,6 @@ export interface SecurityDefsState {
 
 @observer
 export class SecurityDefs extends React.PureComponent<SecurityDefsProps, SecurityDefsState> {
-
   state = {
     tokens: {},
   };
@@ -90,7 +88,7 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps, Securit
     return token => {
       const tokens = this.state.tokens;
       tokens[id] = token;
-      this.setState({tokens});
+      this.setState({ tokens });
     };
   };
 
@@ -145,21 +143,18 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps, Securit
                     </tr>
                   ) : scheme.flows ? (
                     Object.keys(scheme.flows).map(type => (
-                      <OAuthFlow key={type} type={type} token={scheme.token} flow={scheme.flows[type]} />
+                      <OAuthFlow
+                        key={type}
+                        type={type}
+                        token={scheme.token}
+                        flow={scheme.flows[type]}
+                      />
                     ))
                   ) : null}
                 </tbody>
               </table>
             </StyledMarkdownBlock>
           </MiddlePanel>
-          <DarkRightPanel>
-            <TokenGroup
-              title={'Enter ' + scheme.id}
-              description={'You can add token here and store it to use in your request calls in this page.'}
-              onChange={this.setToken(scheme.sectionId)}
-              onSubmit={this.mutateToken(scheme, scheme.sectionId)}
-            />
-          </DarkRightPanel>
         </Row>
       </Section>
     ));
