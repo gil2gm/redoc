@@ -73,14 +73,14 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
 
     const securityHeaders: Dict<string | undefined> = {};
 
-    operation.security.forEach(({ schemes: [{ id }] }) => {
-      if (schemeMapper.has(id)) {
-        // this part of code needs a ts-ignore because typescript couldn't detect that schemeMapper.get(id) -
-        // has been checked to avoid token of undefined.
-        // @ts-ignore
-        securityHeaders[id] = schemeMapper.get(id).token;
-      }
-    });
+    // operation.security.forEach(({ schemes: [{ id }] }) => {
+    //   if (schemeMapper.has(id)) {
+    //     // this part of code needs a ts-ignore because typescript couldn't detect that schemeMapper.get(id) -
+    //     // has been checked to avoid token of undefined.
+    //     // @ts-ignore
+    //     securityHeaders[id] = schemeMapper.get(id).token;
+    //   }
+    // });
     const headers = { ...additionalHeaders, ...contentTypeHeader, ...securityHeaders };
     let result;
     try {
