@@ -125,9 +125,25 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     try {
       const { operation } = this.props;
       let url = this.addParamsToUrl(endpoint.path, operation.parameters || []);
+      console.log('operation parameters are ', operation.parameters);
       if (endpoint.method.toLocaleLowerCase() === 'get') {
         url = url + '?' + qs.stringify(body || '');
       }
+      var queryString = '';
+      operation.parameters.map((fieldVal, index) => {
+        if (fieldVal.in === 'query') {
+          queryString = queryString + fieldVal.name + '=' + fieldVal.$value;
+        }
+        if (index !== operation.parameters.length - 1) {
+          queryString = queryString + '&';
+        }
+      });
+      if (url.includes('?')) {
+        url = url + queryString;
+      } else {
+        url = url + '?' + queryString;
+      }
+      console.log('url is ', url);
       const myHeaders = new Headers();
       for (const [key, value] of Object.entries(headers)) {
         myHeaders.append(key, `${value}`);

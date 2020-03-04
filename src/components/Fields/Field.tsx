@@ -35,7 +35,6 @@ export class Field extends React.Component<FieldProps> {
   };
 
   onFieldChange = e => {
-    console.log('Textfield value is ' + e.target.placeholder + ' - ' + e.target.value);
     this.props.field.setValue(e.target.value);
   };
 
@@ -59,12 +58,12 @@ export class Field extends React.Component<FieldProps> {
         {required && <RequiredLabel> required </RequiredLabel>}
       </ClickablePropertyNameCell>
     ) : (
-        <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
-          <PropertyBullet />
-          {name}
-          {required && <RequiredLabel> required </RequiredLabel>}
-        </PropertyNameCell>
-      );
+      <PropertyNameCell className={deprecated ? 'deprecated' : undefined} kind={kind} title={name}>
+        <PropertyBullet />
+        {name}
+        {required && <RequiredLabel> required </RequiredLabel>}
+      </PropertyNameCell>
+    );
 
     return (
       <>
@@ -73,9 +72,16 @@ export class Field extends React.Component<FieldProps> {
           <PropertyDetailsCell>
             <FieldDetails {...this.props} />
           </PropertyDetailsCell>
-          {field && field.in === 'path' &&
-            <td><TextField placeholder={field.name} onChange={this.onFieldChange} /></td>
-          }
+          {field && field.in === 'path' && (
+            <td>
+              <TextField placeholder={field.name} onChange={this.onFieldChange} />
+            </td>
+          )}
+          {field && field.in === 'query' && (
+            <td>
+              <TextField placeholder={field.name} onChange={this.onFieldChange} />
+            </td>
+          )}
         </tr>
         {field.expanded && withSubSchema && (
           <tr key={field.name + 'inner'}>
