@@ -91,4 +91,5 @@ export const FlexLayoutJustifyContent = styled.div`
   justify-content: flex-start;
   display: flex;
   width: 100%;
+  flex-direction: row-reverse;
 `;

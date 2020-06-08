@@ -203,7 +203,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         )}
         <FlexLayoutJustifyContent>
           <SubmitButton onClick={this.onClickSend}>Send Request</SubmitButton>
-          {<SmallSpinner color={'#555'} loading={loading}/>}
+          {<SmallSpinner color={'#fff'} loading={loading}/>}
         </FlexLayoutJustifyContent>
         {result && <ConsoleResponse response={result} />}
       </div>
