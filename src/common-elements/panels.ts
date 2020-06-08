@@ -85,3 +85,10 @@ export const FlexLayout = styled.div`
 export const FlexLayoutReverse = styled(FlexLayout)`
   flex-direction: row-reverse;
 `;
+
+export const FlexLayoutJustifyContent = styled.div`
+  align-items: center;
+  justify-content: flex-start;
+  display: flex;
+  width: 100%;
+`;

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { SubmitButton } from '../../common-elements/buttons';
-import { FlexLayoutReverse } from '../../common-elements/panels';
+import { FlexLayoutJustifyContent } from '../../common-elements/panels';
 import {
   FieldModel,
   OperationModel,
@@ -9,6 +9,7 @@ import {
   SecuritySchemesModel,
 } from '../../services/models';
 import { ConsoleResponse } from '../ConsoleResponse/Response';
+import {SmallSpinner} from '../Loading/Spinner.svg';
 import { ConsoleEditor } from './ConsoleEditor';
 
 const qs = require('qs');
@@ -24,6 +25,7 @@ export interface ConsoleViewerProps {
 
 export interface ConsoleViewerState {
   result: any;
+  loading: number;
 }
 
 export interface Schema {
@@ -41,9 +43,14 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     super(props);
     this.state = {
       result: null,
+      loading: 0,
     };
   }
   onClickSend = async () => {
+    this.setState({
+      loading: 1,
+    });
+
     const ace = this.consoleEditor && this.consoleEditor.editor;
     const {
       operation,
@@ -93,6 +100,9 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         result: error,
       });
     }
+    this.setState({
+      loading: 0,
+    });
   };
 
   /*
@@ -129,7 +139,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
       if (endpoint.method.toLocaleLowerCase() === 'get') {
         url = url + '?' + qs.stringify(body || '');
       }
-      var queryString = '';
+      let queryString = '';
       operation.parameters.map((fieldVal, index) => {
         if (fieldVal.in === 'query') {
           queryString = queryString + fieldVal.name + '=' + fieldVal.$value;
@@ -181,7 +191,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
     const hasBodySample = requestBodyContent && requestBodyContent.hasSample;
     const mediaTypes =
       requestBodyContent && requestBodyContent.mediaTypes ? requestBodyContent.mediaTypes : [];
-    const { result } = this.state;
+    const { result, loading } = this.state;
     return (
       <div>
         <h3> Request </h3>
@@ -191,9 +201,10 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
             ref={(editor: any) => (this.consoleEditor = editor)}
           />
         )}
-        <FlexLayoutReverse>
+        <FlexLayoutJustifyContent>
           <SubmitButton onClick={this.onClickSend}>Send Request</SubmitButton>
-        </FlexLayoutReverse>
+          {<SmallSpinner color={'#555'} loading={loading}/>}
+        </FlexLayoutJustifyContent>
         {result && <ConsoleResponse response={result} />}
       </div>
     );

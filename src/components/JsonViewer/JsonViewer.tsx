@@ -29,7 +29,6 @@ class Json extends React.PureComponent<JsonProps> {
   };
 
   render() {
-    console.log('jsonviewer prpps are', this.props);
     return (
       <CopyButtonWrapper data={this.props.data} usingTryNow={this.state.usingTryNow}>
         {this.renderInner}
