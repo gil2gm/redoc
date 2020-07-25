@@ -9,7 +9,7 @@ import {
   SecuritySchemesModel,
 } from '../../services/models';
 import { ConsoleResponse } from '../ConsoleResponse/Response';
-import {SmallSpinner} from '../Loading/Spinner.svg';
+import { SmallSpinner } from '../Loading/Spinner.svg';
 import { ConsoleEditor } from './ConsoleEditor';
 
 const qs = require('qs');
@@ -154,10 +154,14 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         url = url + '?' + queryString;
       }
       console.log('url is ', url);
+      const curlHeaders: Array<string> = [];
       const myHeaders = new Headers();
       for (const [key, value] of Object.entries(headers)) {
         myHeaders.append(key, `${value}`);
+        curlHeaders.push(`"${key}: ${value}"`);
       }
+      const curl = `curl -X ${endpoint.method.toUpperCase()} "${url}" ${curlHeaders.length > 0 ? '-H ' + curlHeaders.join(' -H ') : ''} ${body ? '-d ' + JSON.stringify(body) : ''}`
+      console.log('curl is ', curl);
 
       const request = new Request(url, {
         method: endpoint.method,
@@ -169,6 +173,9 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
       const response = await fetch(request);
       const content = await response.json();
       const { ok, status, statusText, redirected } = response;
+      for (const [key, value] of Object.entries(response.headers)) {
+        console.log('headers is ', key, `${value}`);
+      }
       return {
         content,
         ok,
@@ -177,6 +184,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         redirected,
         headers: response.headers,
         url: response.url,
+        curl,
       };
     } catch (error) {
       console.error(error);
@@ -203,7 +211,7 @@ export class ConsoleViewer extends React.Component<ConsoleViewerProps, ConsoleVi
         )}
         <FlexLayoutJustifyContent>
           <SubmitButton onClick={this.onClickSend}>Send Request</SubmitButton>
-          {<SmallSpinner color={'#fff'} loading={loading}/>}
+          {<SmallSpinner color={'#fff'} loading={loading} />}
         </FlexLayoutJustifyContent>
         {result && <ConsoleResponse response={result} />}
       </div>

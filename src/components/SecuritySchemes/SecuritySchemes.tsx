@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { TokenGroup } from '..';
 
-import { H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
+import { DarkRightPanel, H2, MiddlePanel, Row, Section, ShareLink } from '../../common-elements';
 
 import { SecuritySchemesModel } from '../../services/models';
 import { OpenAPISecurityScheme } from '../../types';
@@ -155,6 +156,14 @@ export class SecurityDefs extends React.PureComponent<SecurityDefsProps, Securit
               </table>
             </StyledMarkdownBlock>
           </MiddlePanel>
+          <DarkRightPanel>
+            <TokenGroup
+              title={'Enter ' + scheme.id}
+              description={'You can add token here and store it to use in your request calls in this page.'}
+              onChange={this.setToken(scheme.sectionId)}
+              onSubmit={this.mutateToken(scheme, scheme.sectionId)}
+            />
+          </DarkRightPanel>
         </Row>
       </Section>
     ));

@@ -16,7 +16,7 @@ interface ConsoleResponseState {
 export class ConsoleResponse extends React.PureComponent<
   ConsoleResponseProps,
   ConsoleResponseState
-> {
+  > {
   constructor(props) {
     super(props);
     this.state = { collapse: false };
@@ -28,11 +28,21 @@ export class ConsoleResponse extends React.PureComponent<
 
   render() {
     const {
-      response: { headers, type, status, statusText, content },
+      response: { headers, type, status, statusText, content, url, curl },
     } = this.props;
     const collapse = this.state.collapse;
     return (
       <>
+        <RightPanelHeader> Curl: </RightPanelHeader>
+        <JsonWrapper>
+          <SourceCodeWrapper>
+            <SourceCodeWithCopy lang="json" source={curl} />
+          </SourceCodeWrapper>
+        </JsonWrapper>
+        <RightPanelHeader> Request URL: </RightPanelHeader>
+        <StatusWrapper className={'status-' + type}>
+          {url}
+        </StatusWrapper>
         <RightPanelHeader> status: </RightPanelHeader>
         <StatusWrapper className={'status-' + type}>
           {' '}
@@ -40,7 +50,7 @@ export class ConsoleResponse extends React.PureComponent<
         </StatusWrapper>
         <RightPanelHeader> Response Payload </RightPanelHeader>
         <JsonWrapper>
-          <JsonViewer data={content!} consoleViewerObj={{}} />
+          <JsonViewer data={content} consoleViewerObj={{}} />
         </JsonWrapper>
         <RightPanelHeader> Response Headers</RightPanelHeader>
         <HeaderWrapper>
